@@ -42,36 +42,26 @@ phone = driver.find_element(By.XPATH, "//input[@placeholder='00-00000000']").sen
 password = driver.find_element(By.XPATH, "//input[@placeholder='******************']").send_keys("Helloworld1@")
 confirmpassword = driver.find_element(By.XPATH, "//input[@name='confirmPassword']").send_keys("Helloworld1@")
 
-# Record the time before clicking Next
 request_started_at = int(time.time() * 1000)
 
-# Click Next
-driver.find_element(
-    By.XPATH, "//button[normalize-space()='Next']"
-).click()
+driver.find_element(By.XPATH, "//button[normalize-space()='Next']").click()
+print("Next button clicked.")
 
-print("Next button clicked. Waiting for OTP...")
+print("Waiting for OTP...")
 
-# Wait for OTP input field
 otp_input = wait.until(
     EC.element_to_be_clickable(
         (By.CSS_SELECTOR, 'input[data-input-otp="true"]')
     )
 )
+print("OTP field found.")
 
-print("OTP input field is visible.")
-
-# Get the latest OTP from Gmail
 otp = get_latest_otp(request_started_at)
-print("OTP received:", otp)
-print("New OTP received from Gmail.")
+print("OTP received from Gmail.")
 
-# Enter OTP into website
 otp_input.send_keys(otp)
+print("OTP entered.")
 
-print("OTP entered successfully.")
-
-# Click Verify Code
 verify_button = wait.until(
     EC.element_to_be_clickable(
         (By.XPATH, "//button[normalize-space()='Verify Code']")
@@ -79,9 +69,7 @@ verify_button = wait.until(
 )
 
 verify_button.click()
-
 print("Verify Code button clicked.")
 
-verify_code = driver.find_element(By.XPATH, "//button[normalize-space()='Verify Code']").click()
 time.sleep(1)
 
